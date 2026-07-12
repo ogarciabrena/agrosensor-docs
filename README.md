@@ -39,7 +39,8 @@ flowchart LR
 | [docs/04-supabase.md](docs/04-supabase.md) | Esquema SQL, políticas RLS, seguridad de llaves |
 | [docs/05-capa-analisis.md](docs/05-capa-analisis.md) | Capa de análisis agnóstica: núcleo puro + adaptadores MCP/REST/CLI |
 | [docs/06-prompt-claude-code.md](docs/06-prompt-claude-code.md) | Prompt listo para copiar en Claude Code |
-| [docs/07-invernadero.md](docs/07-invernadero.md) | 🆕 Invernadero inteligente: control de riego/ventilación/extractor |
+| [docs/07-invernadero.md](docs/07-invernadero.md) | Invernadero inteligente: control de riego/ventilación/extractor |
+| [docs/08-ciclo-completo.md](docs/08-ciclo-completo.md) | 🆕 El lazo cerrado completo: medir → analizar → decidir → regar → verificar |
 | [firmware/nodo-sensor/](firmware/nodo-sensor/) | 🆕 Firmware del nodo de campo (deep sleep + buffer offline) + simulación Wokwi |
 | [firmware/invernadero/](firmware/invernadero/) | 🆕 Firmware del invernadero (histéresis + comandos manuales) + simulación Wokwi |
 | [supabase/001_schema.sql](supabase/001_schema.sql) | Migración SQL base |
