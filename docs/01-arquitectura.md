@@ -71,7 +71,8 @@ flowchart TD
 
 | Decisión | Alternativa descartada | Razón |
 |---|---|---|
-| MCP local por **stdio** | MCP remoto HTTP/SSE en VPS | Cero infraestructura, cero superficie de ataque, corre en cualquier máquina. El análisis no necesita estar disponible 24/7 — los datos sí, y de eso se encarga Supabase. |
+| **Núcleo de análisis agnóstico** con adaptadores (MCP/REST/CLI) | Servidor MCP monolítico | La lógica no depende de ningún protocolo ni LLM. MCP es un adaptador de ~80 líneas; si cambia o se reemplaza, el core no se toca. |
+| Adaptador MCP local por **stdio** | MCP remoto HTTP/SSE en VPS | Cero infraestructura, cero superficie de ataque, corre en cualquier máquina. El análisis no necesita estar disponible 24/7 — los datos sí, y de eso se encarga Supabase. |
 | ESP32 → Supabase **directo** | Edge Function intermedia | Menos partes móviles. RLS de solo-insert acota el riesgo de la anon key expuesta en firmware. |
 | **Deep sleep** 5 min | Lectura continua | La humedad del suelo cambia en horas, no en segundos. Consumo ~10 µA dormido → meses con batería. |
 | Sensor **capacitivo** | Sensor resistivo | El resistivo se corroe en semanas por electrólisis. |

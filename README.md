@@ -37,7 +37,7 @@ flowchart LR
 | [docs/02-hardware.md](docs/02-hardware.md) | BOM, diagrama de conexiones, alimentación solar |
 | [docs/03-firmware.md](docs/03-firmware.md) | Especificación del firmware ESP32 (PlatformIO) |
 | [docs/04-supabase.md](docs/04-supabase.md) | Esquema SQL, políticas RLS, seguridad de llaves |
-| [docs/05-mcp-server.md](docs/05-mcp-server.md) | Servidor MCP portable (stdio) y sus 7 herramientas de análisis |
+| [docs/05-capa-analisis.md](docs/05-capa-analisis.md) | Capa de análisis agnóstica: núcleo puro + adaptadores MCP/REST/CLI |
 | [docs/06-prompt-claude-code.md](docs/06-prompt-claude-code.md) | Prompt listo para copiar en Claude Code |
 | [docs/07-invernadero.md](docs/07-invernadero.md) | 🆕 Invernadero inteligente: control de riego/ventilación/extractor |
 | [firmware/nodo-sensor/](firmware/nodo-sensor/) | 🆕 Firmware del nodo de campo (deep sleep + buffer offline) + simulación Wokwi |
@@ -48,7 +48,7 @@ flowchart LR
 ## Filosofía del proyecto
 
 1. **Costo cero de infraestructura**: Supabase free tier + MCP local. Nada que mantener 24/7.
-2. **Portable**: el MCP corre en cualquier máquina con Node.js 20+. Se conecta a Claude Desktop o Claude Code con 4 líneas de configuración.
+2. **Portable y agnóstico**: la lógica de análisis es un núcleo TypeScript puro. MCP, REST y CLI son adaptadores delgados — funciona con Claude, con cualquier otro LLM, con scripts o con n8n, en cualquier máquina con Node.js 20+.
 3. **Seguro por diseño**: el ESP32 solo puede *insertar* lecturas (RLS). La llave `service_role` nunca sale de la máquina de análisis.
 4. **Documentación primero**: todo el sistema está especificado aquí antes de escribir una línea de código. Claude Code implementa a partir de esta spec.
 

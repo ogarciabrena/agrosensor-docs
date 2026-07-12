@@ -9,24 +9,34 @@ Lee toda la documentación de este repositorio (README.md, docs/01 a 05 y
 supabase/001_schema.sql). Es la especificación completa del proyecto AgroSensor.
 Implementa lo siguiente en dos carpetas hermanas a este repo:
 
-## 1. ../agro-mcp — Servidor MCP portable (prioridad 1)
+## 1. ../agro-analisis — Capa de análisis agnóstica (prioridad 1)
 
-- Node.js 20+, TypeScript estricto, @modelcontextprotocol/sdk con
-  StdioServerTransport, @supabase/supabase-js.
-- Implementa las 8 herramientas de docs/05-mcp-server.md EXACTAMENTE como
-  están especificadas, incluyendo las reglas de análisis (regresión lineal,
-  z-score, sensores congelados, gaps, deduplicación de alertas, umbrales
-  por cultivo, Hargreaves simplificado).
-- Estructura de archivos según la sección "Estructura del repo" del doc 05.
-- Variables de entorno vía dotenv: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY.
-- Cada tool con try/catch: un error de query devuelve texto explicativo,
-  nunca tira el proceso.
-- Scripts npm: build (tsc), start (node dist/index.js), dev (tsx src/index.ts).
-- README en español con: instalación, configuración para Claude Desktop
-  y Claude Code (copiar de docs/05), y ejemplos de preguntas en lenguaje
-  natural que activan cada tool.
+- Node.js 20+, TypeScript estricto, @supabase/supabase-js.
+- ARQUITECTURA OBLIGATORIA (docs/05-capa-analisis.md): núcleo puro en
+  src/core/ que implementa la interfaz AgroCore completa (11 funciones,
+  incluyendo las 3 del invernadero del doc 07) con las reglas de análisis
+  del final del doc 05. El core NO importa nada de protocolos.
+- Tres adaptadores delgados en src/adapters/:
+  - mcp.ts: @modelcontextprotocol/sdk con StdioServerTransport, una tool
+    por función del core.
+  - rest.ts: Fastify, un endpoint por función, auth x-api-key, y
+    /openapi.json autogenerado.
+  - cli.ts: comandos básicos (trend, anomalies, riega, status, export).
+- Variables de entorno vía dotenv: SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY,
+  API_KEY (solo para el adaptador REST).
+- Errores: el core lanza errores tipados; cada ADAPTADOR los captura y
+  los traduce a su protocolo. Nunca tirar el proceso.
+- Tests unitarios del core en test/core/ (vitest) con el repo mockeado:
+  regresión, z-score, histéresis de deduplicación de alertas.
+- Scripts npm: build, mcp, rest, cli, test.
+- README en español: instalación, registro del adaptador MCP en Claude
+  Desktop/Code, uso del REST con cualquier LLM vía OpenAPI, ejemplos CLI.
 
 ## 2. ../agro-esp32 — Firmware (prioridad 2)
+
+NOTA: el firmware de referencia ya existe en firmware/ de este repo
+(nodo-sensor e invernadero). Úsalo como base, revísalo, corrige lo que
+encuentres y complétalo — no lo reescribas desde cero.
 
 - PlatformIO, board esp32dev, framework Arduino.
 - Implementa TODOS los requisitos F1–F10 de docs/03-firmware.md: deep sleep
@@ -46,17 +56,17 @@ Implementa lo siguiente en dos carpetas hermanas a este repo:
 - Sin dependencias innecesarias.
 - Al terminar cada carpeta: inicializa git, haz commit inicial con mensaje
   descriptivo. NO hagas push — yo creo los repos remotos y hago push.
-- Verifica que agro-mcp compile (npm run build) sin errores antes de terminar.
+- Verifica que agro-analisis compile (npm run build) y pase los tests antes de terminar.
 ```
 
 ---
 
 ## Después de que Claude Code termine
 
-1. Crear los repos vacíos en GitHub: `agro-mcp` y `agro-esp32`
+1. Crear los repos vacíos en GitHub: `agro-analisis` y `agro-esp32`
 2. En cada carpeta: `git remote add origin git@github.com:ogarciabrena/<repo>.git && git push -u origin main`
 3. Crear el proyecto en Supabase → SQL Editor → pegar `supabase/001_schema.sql`
-4. Copiar `.env.example` → `.env` en agro-mcp con las llaves reales
-5. `npm install && npm run build` en agro-mcp
-6. Registrar el MCP en Claude Desktop o Claude Code (comandos en docs/05)
+4. Copiar `.env.example` → `.env` en agro-analisis con las llaves reales
+5. `npm install && npm run build && npm test` en agro-analisis
+6. Registrar el adaptador MCP en Claude Desktop o Claude Code (comandos en docs/05) — o levantar el REST si usarás otro LLM
 7. Flashear el primer nodo con PlatformIO y verificar que lleguen lecturas a Supabase
