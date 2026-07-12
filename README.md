@@ -2,7 +2,7 @@
 
 Sistema de agricultura de precisión basado en **ESP32 + Supabase + MCP**, diseñado para monitoreo de cultivos en Oaxaca (agave, hortalizas, milpa).
 
-> **Este repositorio es documentación pura.** Contiene la especificación completa, diagramas y el prompt para que **Claude Code** genere e implemente el código en cualquier máquina. El servidor MCP corre **localmente vía stdio** en cualquier equipo (laptop, PC, VPS opcional) — no requiere infraestructura dedicada.
+> **Este repositorio contiene la especificación completa, diagramas, y el firmware ESP32 con simulación Wokwi.** El prompt de `docs/06` permite que **Claude Code** genere el servidor MCP en cualquier máquina. El servidor MCP corre **localmente vía stdio** en cualquier equipo (laptop, PC, VPS opcional) — no requiere infraestructura dedicada.
 
 ## Arquitectura en un vistazo
 
@@ -39,7 +39,11 @@ flowchart LR
 | [docs/04-supabase.md](docs/04-supabase.md) | Esquema SQL, políticas RLS, seguridad de llaves |
 | [docs/05-mcp-server.md](docs/05-mcp-server.md) | Servidor MCP portable (stdio) y sus 7 herramientas de análisis |
 | [docs/06-prompt-claude-code.md](docs/06-prompt-claude-code.md) | Prompt listo para copiar en Claude Code |
-| [supabase/001_schema.sql](supabase/001_schema.sql) | Migración SQL lista para ejecutar |
+| [docs/07-invernadero.md](docs/07-invernadero.md) | 🆕 Invernadero inteligente: control de riego/ventilación/extractor |
+| [firmware/nodo-sensor/](firmware/nodo-sensor/) | 🆕 Firmware del nodo de campo (deep sleep + buffer offline) + simulación Wokwi |
+| [firmware/invernadero/](firmware/invernadero/) | 🆕 Firmware del invernadero (histéresis + comandos manuales) + simulación Wokwi |
+| [supabase/001_schema.sql](supabase/001_schema.sql) | Migración SQL base |
+| [supabase/002_invernadero.sql](supabase/002_invernadero.sql) | 🆕 Migración: comandos manuales y log de actuadores |
 
 ## Filosofía del proyecto
 

@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "author": "Omar García Brena · AgroSensor OGB · Invernadero",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 60, "left": 0, "attrs": {} },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "soil",
+      "top": -30,
+      "left": 280,
+      "attrs": { "label": "Humedad suelo" }
+    },
+    { "type": "wokwi-dht22", "id": "dht", "top": 110, "left": 280, "attrs": {} },
+    {
+      "type": "wokwi-photoresistor-sensor",
+      "id": "ldr",
+      "top": 230,
+      "left": 280,
+      "attrs": { "label": "Luz" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_pump",
+      "top": -40,
+      "left": -140,
+      "attrs": { "color": "blue", "label": "BOMBA" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_fan",
+      "top": 60,
+      "left": -140,
+      "attrs": { "color": "green", "label": "VENTILADOR" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_ext",
+      "top": 160,
+      "left": -140,
+      "attrs": { "color": "yellow", "label": "EXTRACTOR" }
+    },
+    { "type": "wokwi-resistor", "id": "r1", "top": -20, "left": -70, "attrs": { "value": "220" } },
+    { "type": "wokwi-resistor", "id": "r2", "top": 80, "left": -70, "attrs": { "value": "220" } },
+    { "type": "wokwi-resistor", "id": "r3", "top": 180, "left": -70, "attrs": { "value": "220" } }
+  ],
+  "connections": [
+    [ "esp:3V3", "soil:VCC", "red", [] ],
+    [ "esp:GND.1", "soil:GND", "black", [] ],
+    [ "soil:SIG", "esp:34", "green", [] ],
+
+    [ "esp:3V3", "dht:VCC", "red", [] ],
+    [ "esp:GND.2", "dht:GND", "black", [] ],
+    [ "dht:SDA", "esp:27", "yellow", [] ],
+
+    [ "esp:3V3", "ldr:VCC", "red", [] ],
+    [ "esp:GND.3", "ldr:GND", "black", [] ],
+    [ "ldr:AO", "esp:32", "orange", [] ],
+
+    [ "esp:25", "r1:1", "blue", [] ],
+    [ "r1:2", "led_pump:A", "blue", [] ],
+    [ "led_pump:C", "esp:GND.1", "black", [] ],
+
+    [ "esp:26", "r2:1", "green", [] ],
+    [ "r2:2", "led_fan:A", "green", [] ],
+    [ "led_fan:C", "esp:GND.1", "black", [] ],
+
+    [ "esp:33", "r3:1", "yellow", [] ],
+    [ "r3:2", "led_ext:A", "yellow", [] ],
+    [ "led_ext:C", "esp:GND.1", "black", [] ]
+  ]
+}
